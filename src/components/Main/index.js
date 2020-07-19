@@ -1,29 +1,16 @@
 import React, { Component } from 'react';
-import Axios from 'axios';
 import { Link } from 'react-router-dom'
 import Pokeball from '../../pokeball.png'
-
-// import { Container } from './styles';
+import { connect } from 'react-redux'
 
 class Main extends Component {
-  state = {
-    posts: []
-  }
-  
-  componentDidMount() {
-    Axios.get('https://jsonplaceholder.typicode.com/posts')
-    .then(res => {
-      console.log(res);
-      this.setState({
-        posts: res.data.slice(0, 10)
-      })
-    })
-  }
   render() {
-    const { posts } = this.state
+    console.log(this.props);
+    const { posts } = this.props
     const postList = posts.length ? (
       posts.map(post => (
         <div className='post card' key={post.id}>
+          {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
           <img src={Pokeball} alt='A pokeball image'/>
           <div className='card-content'>
             <Link to={'/' + post.id}> 
@@ -47,4 +34,10 @@ class Main extends Component {
   }
 }
 
-export default Main;
+const mapStateToProps = state => {
+  return {
+    posts: state.posts
+  }
+}
+
+export default connect(mapStateToProps)(Main);
